@@ -419,7 +419,13 @@ public class RNIapModule extends ReactContextBaseJavaModule {
 
         if (buyItemCB != null) {
           Log.d(TAG, "return : " + purchases.get(0).getOriginalJson());
-          buyItemCB.invoke(null, purchases.get(0).getOriginalJson());
+          Log.d(TAG, "return 2 : " + purchases);
+          JSONObject json = new JSONObject();
+          json.put("orderId", purchase.get(0).getOrderId());
+          json.put("purchaseTime", purchase.get(0).getPurchaseTime());
+          json.put("purchaseToken", purchase.get(0).getPurchaseToken());
+          json.put("signature", purchase.get(0).getSignature());
+          buyItemCB.invoke(null, json);
           buyItemCB = null;
         }
         return;
