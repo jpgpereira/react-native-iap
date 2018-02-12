@@ -419,13 +419,24 @@ public class RNIapModule extends ReactContextBaseJavaModule {
 
         if (buyItemCB != null) {
           Log.d(TAG, "return : " + purchases.get(0).getOriginalJson());
-          JSONObject json = new JSONObject();
-          json.put("orderId", purchases.get(0).getOrderId());
-          json.put("purchaseTime", purchases.get(0).getPurchaseTime());
-          json.put("purchaseToken", purchases.get(0).getPurchaseToken());
-          json.put("signature", purchases.get(0).getSignature());
-          buyItemCB.invoke(null, json);
-          buyItemCB = null;
+          Log.d(TAG, "orderId: " + purchases.get(0).getOrderId());
+          Log.d(TAG, "purchaseTime: " + purchases.get(0).getPurchaseTime());
+          Log.d(TAG, "purchaseToken: " + purchases.get(0).getPurchaseToken());
+          Log.d(TAG, "signature: " + purchases.get(0).getSignature());
+          try {
+            JSONObject json = new JSONObject();
+            json.put("orderId", purchases.get(0).getOrderId());
+            json.put("purchaseTime", purchases.get(0).getPurchaseTime());
+            json.put("purchaseToken", purchases.get(0).getPurchaseToken());
+            json.put("signature", purchases.get(0).getSignature());
+            buyItemCB.invoke(null, json);
+            buyItemCB = null;
+          } catch (JSONException je) {
+            Log.d(TAG, "exception : " + je);
+            buyItemCB.invoke(null, purchases.get(0).getOriginalJson());
+            buyItemCB = null;
+            return;
+          }
         }
         return;
       }
