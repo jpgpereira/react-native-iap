@@ -415,8 +415,11 @@ public class RNIapModule extends ReactContextBaseJavaModule {
       Log.d(TAG, "Purchase Updated Listener");
       Log.d(TAG, "responseCode: " + responseCode);
       if (responseCode == 0) {
-        // Log.d(TAG, "purchase: " + purchases.get(0).toString());
+        Log.d(TAG, "purchase: " + purchases.get(0).getOriginalJson());
         Log.d(TAG, "signature: " + purchases.get(0).getSignature());
+        Log.d("DUMMY", "YES");
+        Log.d(TAG, "purchase [string]: " + purchases.get(0).getOriginalJson().toString());
+        Log.d(TAG, "signature [string]: " + purchases.get(0).getSignature().toString());
 
         if (buyItemCB != null) {
           try {
