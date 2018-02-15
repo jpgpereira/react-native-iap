@@ -415,22 +415,21 @@ public class RNIapModule extends ReactContextBaseJavaModule {
       Log.d(TAG, "Purchase Updated Listener");
       Log.d(TAG, "responseCode: " + responseCode);
       if (responseCode == 0) {
-        Log.d(TAG, purchases.toString());
+        // Log.d(TAG, "purchase: " + purchases.get(0).toString());
+        Log.d(TAG, "signature: " + purchases.get(0).getSignature());
 
         if (buyItemCB != null) {
           try {
             JSONObject receipt = new JSONObject();
-            Log.d(TAG, "data : " + purchases.get(0).getOriginalJson());
-            receipt.put("data", purchases.get(0).getOriginalJson());
-            Log.d(TAG, "signature : " + purchases.get(0).getSignature());
-            receipt.put("signature", purchases.get(0).getSignature());
-            Log.d(TAG, "receipt : " + receipt);
+            receipt.put("data", purchases.get(0).getOriginalJson().toString());
+            receipt.put("signature", purchases.get(0).getSignature().toString());
             buyItemCB.invoke(null, receipt);
             buyItemCB = null;
-          } catch (JSONException je) {
+            return;
+          } catch (Exception e) {
+            Log.d(TAG, "exception : " + e.getMessage());
+            buyItemCB.invoke(e.getMessage(), null);
             buyItemCB = null;
-            Log.d(TAG, "exception : " + je.getMessage());
-            cb.invoke(je.getMessage(), null);
             return;
           }
         }
